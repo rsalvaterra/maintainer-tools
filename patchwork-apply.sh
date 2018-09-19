@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+SED=$(which gsed 2>/dev/null); SED=${SED:-sed}
+
 yesno() {
 	local prompt="$1"
 	local default="${2:-n}"
@@ -26,7 +28,7 @@ fetch() {(
 )}
 
 get_date() {
-	date +"%a, %d %b %Y %H:%M:%S %z" | sed -e 's|, 0|, |'
+	date +"%a, %d %b %Y %H:%M:%S %z" | $SED -e 's|, 0|, |'
 }
 
 get_subject() {
@@ -34,11 +36,11 @@ get_subject() {
 	local IFS="
 "
 
-	for line in $(sed -ne '/^Subject: */ { s/^Subject: *//p; :next; n; s/^ \+//p; t next; b }' "$1"); do
+	for line in $($SED -ne '/^Subject: */ { s/^Subject: *//p; :next; n; s/^ \+//p; t next; b }' "$1"); do
 		subject="$subject$line"
 	done
 
-	printf "%s\n" "$subject" | sed -e 's/^\[.*\] \+//'
+	printf "%s\n" "$subject" | $SED -e 's/^\[.*\] \+//'
 }
 
 get_hdr_list() {
@@ -49,15 +51,15 @@ get_hdr_list() {
 	local IFS=",
 "
 
-	for addr in $(sed -ne "/^$field: */ { s/^$field: *//p; :next; n; s/^ \\+//p; t next; b }" "$file"); do
-		list="${list:+$list, }$(echo "$addr" | sed -e 's/^ \+//; s/ \+$//')"
+	for addr in $($SED -ne "/^$field: */ { s/^$field: *//p; :next; n; s/^ \\+//p; t next; b }" "$file"); do
+		list="${list:+$list, }$(echo "$addr" | $SED -e 's/^ \+//; s/ \+$//')"
 	done
 
 	[ -n "$list" ] && printf "%s: %s\n" "$field" "$list"
 }
 
 get_hdr() {
-	sed -ne "s/^$2: *//p" "$1" | head -n1
+	$SED -ne "s/^$2: *//p" "$1" | head -n1
 }
 
 format_reply() {
