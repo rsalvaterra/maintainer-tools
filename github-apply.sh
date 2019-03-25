@@ -11,7 +11,7 @@ REPO="openwrt/openwrt"
 #TOKEN="d41d8cd98f00b204e9800998ecf8427e"
 
 # Default close comment
-COMMENT="Pulled into my staging tree at https://git.openwrt.org/openwrt/staging/$(whoami).git"
+COMMENT="Thanks! Pulled into my staging tree at https://git.openwrt.org/openwrt/staging/$(whoami).git"
 
 PRID="$1"
 BRANCH="${2:-master}"
