@@ -138,7 +138,7 @@ sed -e 's!\(VERSION_NUMBER:=\$(if .*\),[^,]*)!\1,'"$version"')!g' \
 	include/version.mk > include/version.tagged && \
 		mv include/version.tagged include/version.mk
 
-sed -e 's!http://downloads.\(openwrt\|lede-project\).org/[^"]*!'"$base_url/$version"'!g' \
+sed -e 's!\(http\|https\)://downloads.\(openwrt\|lede-project\).org/[^"]*!'"$base_url/$version"'!g' \
     -e '/config VERSION_CODE_FILENAMES/ { :next; n; s!default y!default n!; t end; b next }; :end' \
 	package/base-files/image-config.in > package/base-files/image-config.tagged && \
 		mv package/base-files/image-config.tagged package/base-files/image-config.in
